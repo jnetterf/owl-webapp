@@ -1,7 +1,7 @@
 owl-webapp
 ==========
 
-owl-webapp is a web client for Owl, a real-time data viewer and server for GetData. It's written in React.
+owl-webapp is a web client for Owl, a real-time data viewer and server for [GetData](http://getdata.sourceforge.net/). It uses [Facebook React](https://github.com/facebook/react).
 
 Setup and Usage
 ---------------
@@ -29,4 +29,4 @@ Troubleshooting
    sudo ln -s /usr/bin/nodejs /usr/bin/node
    ```
    
-- In the webapp, remember the 'ws://' prefix to connect to Owl
+- In the webapp, remember the 'ws://' prefix when connecting to Owl server.

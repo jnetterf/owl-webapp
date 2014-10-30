@@ -1,0 +1,20 @@
+.home {
+    padding: 20px;
+}
+
+.form-small {
+    margin-bottom: -15px;
+}
+
+.header.form-horizontal label {
+    text-align: left;
+}
+
+.throbber {
+    text-align: center;
+    margin-top: 10%;
+}
+
+.box .item .caption {
+    padding-right: 10px;
+}

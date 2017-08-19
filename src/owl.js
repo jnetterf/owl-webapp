@@ -3,46 +3,44 @@
  * Written by Joshua Netterfield <joshua@nettek.ca>, September 2014
  */
 
-/** @jsx React.DOM */
-
-var React = require("react");
-var Bootstrap = require("react-bootstrap");
-var _ = require("lodash");
+import React from "react";
+import _ from "lodash";
 
 /**
  * Renders an animated Owl. Because owls.
  */
-var Owl = React.createClass({
-    render: function() {
-        var style = {
+export default class Owl extends React.Component {
+    render() {
+        const style = {
             width: this.props.owl.geometryWidth,
             height: this.props.owl.geometryHeight,
             marginLeft: this.props.owl.geometryX,
             marginTop: this.props.owl.geometryY,
             position: "absolute",
         };
-        return <img className="owl" style={style}
-            src={"/res/owl" + this.state.counter + ".png"} />
-    },
+        return <img className="owl" style={style} alt="An owl"
+            src={"owl" + this.state.counter + ".png"} />
+    }
 
-    getInitialState: function() {
-        return {
-            counter: 0
-        };
-    },
+    state = {
+        counter: 0
+    };
 
-    componentDidMount: function() {
+    componentDidMount() {
         _.delay(this._updateCounter, 500);
-    },
+    }
+    _mounted = true;
 
-    _updateCounter: function() {
-        if (this.isMounted()) {
+    componentDidUnmount() {
+        this._mounted = false;
+    }
+
+    _updateCounter = () => {
+        if (this._mounted) {
             this.setState({
                 counter: (this.state.counter + 1) % 4
             });
             _.delay(this._updateCounter, 500);
         }
     }
-});
-
-module.exports = Owl;
+}

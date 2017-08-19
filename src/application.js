@@ -3,61 +3,64 @@
  * Written by Joshua Netterfield <joshua@nettek.ca>, September 2014
  */
 
-/** @jsx React.DOM */
+import React from "react";
+import {Alert} from "react-bootstrap";
+import _ from "lodash";
 
-var React = require("react");
-var Bootstrap = require("react-bootstrap");
-var _ = require("lodash");
-
-var LiveDataView = require("./liveDataView.jsx");
+import LiveDataView from "./liveDataView";
 
 /**
  * The root object. Renders the URL selector, and connects to Owl's websocket.
  * Delegates the data rendering to LiveDataView.
  */
-var Application = React.createClass({
-    render: function() {
+export default class Application extends React.Component {
+    state = {
+        server: window.localStorage["server"] || "",
+        connected: false,
+        loading: false
+    };
+
+    render() {
         return <div className="home">
-            <Bootstrap.Alert bsStyle={this.state.connected ? "info" : "danger"} >
+            <Alert bsStyle={this.state.connected ? "info" : "danger"}>
                 <form className="form-horizontal form-small header">
-                    <Bootstrap.Input type="text"
+                    <input type="text"
                         className="serverName"
-                        label="Owl Web Client"
-                        labelClassName="col-xs-3"
-                        wrapperClassName="col-xs-9"
-                        ref="input"
+                        ref={input => this._input = input}
                         value={this.state.server}
                         placeholder="ws://localhost:8008"
                         onChange={this.handleChange} />
                 </form>
-            </Bootstrap.Alert>
+            </Alert>
             {this.state.loading && <div className="throbber">
                 <i className="fa-circle-o-notch fa-spin fa-4x fa" /></div>}
             {this.state.data && <LiveDataView data={this.state.data} />}
         </div>;
-    },
+    }
 
-    handleChange: function() {
-        var srv = this.refs.input.getValue();
+    _input = null;
+    handleChange = () => {
+        const srv = this._input.value;
         this.setState({
             server: srv,
             data: null
         });
         window.localStorage["server"] = srv;
         this.tryToConnect(srv);
-    },
+    }
 
-    componentDidMount: function() {
+    componentDidMount() {
         this.tryToConnect();
-    },
+    }
 
-    tryToConnect: function(srv) {
+    tryToConnect = (srv) => {
         this.setState({
             connected: false,
             loading: true
         });
 
         try {
+            console.log(srv, this.state.server);
             this._ws = new WebSocket(srv || this.state.server);
             this._ws.onmessage = this._handleOwlMessage;
             this._ws.onerror = this._handleOwlError;
@@ -66,10 +69,10 @@ var Application = React.createClass({
         } catch(err) {
             this._handleOwlError();
         }
-    },
+    }
 
-    _handleOwlMessage: function(msg) {
-        var data = JSON.parse(msg.data);
+    _handleOwlMessage = (msg) => {
+        const data = JSON.parse(msg.data);
         data.statics = LiveDataView.indexStaticsByKeys(data.statics);
 
         if (!this.state.data) {
@@ -81,31 +84,21 @@ var Application = React.createClass({
                 data: _.merge(this.state.data, data)
             });
         }
-    },
+    }
 
-    _handleOwlError: function() {
+    _handleOwlError = (err) => {
         this.setState({
             connected: false,
             loading: false
         });
-    },
+    }
 
-    _handleOwlOpened: function() {
+    _handleOwlOpened = () => {
         this.setState({
             connected: true,
             loading: false
         });
-    },
-
-    _ws: null,
-
-    getInitialState: function() {
-        return {
-            server: window.localStorage["server"] || "",
-            connected: false,
-            loading: false
-        }
     }
-});
 
-module.exports = Application;
+    _ws = null;
+}

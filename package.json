@@ -1,30 +1,19 @@
 {
-    "name": "owl-webapp",
-    "version": "5.0.0",
-    "description": "Web client for Owl, a real-time data viewer and server for GetData",
-    "main": "./src/main.jsx",
-    "dependencies": {
-        "lodash": "2.4.1",
-        "react": "0.11.1",
-        "react-bootstrap": "0.12.0",
-        "sprintf-js": "0.0.7"
-    },
-    "devDependencies": {
-        "browserify": "4.1.5",
-        "react-tools": "0.11.1",
-        "reactify": "0.14.0",
-        "uglify-js": "2.4.15",
-        "watchify": "0.10.1"
-    },
-    "scripts": {
-        "dev-server": "watchify --extension .jsx -o build/browser-bundle.js -v -d .",
-        "build": "NODE_ENV=production browserify --extension .ts . | uglifyjs -cm > build/browser-bundle.js"
-    },
-    "author": "Josh Netterfield",
-    "license": "(C) Josh Netterfield 2014. Released under a BSD-style license.",
-    "browserify": {
-        "transform": [
-            ["reactify", {"es6": true}]
-        ]
-    }
+  "name": "owl-webapp",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "lodash": "2.4.1",
+    "prop-types": "^15.5.10",
+    "react": "^15.6.1",
+    "react-bootstrap": "0.31.2",
+    "react-dom": "^15.6.1",
+    "react-scripts": "1.0.11"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  }
 }

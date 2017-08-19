@@ -3,24 +3,20 @@
  * Written by Joshua Netterfield <joshua@nettek.ca>, September 2014
  */
 
-/** @jsx React.DOM */
+import PropTypes from 'prop-types';
+import React from "react";
 
-var React = require("react");
-var Bootstrap = require("react-bootstrap");
-var _ = require("lodash");
-var sprintf = require("sprintf-js").sprintf;
-
-var Types = require("./types.jsx");
+import Types from "./types";
 
 /**
  * Renders a title and a value.
  */
-var DataItem = React.createClass({
-    render: function() {
+export default class DataItem extends React.Component {
+    render() {
         this._lastVal = this.props.data["(P" + this.props.dataItem.PObject._id + ")"][0];
-        var styleId = this.getStyleId();
-        var captionStyleId = this.props.dataItem._captionStyle;
-        var val = this.getVal();
+        const styleId = this.getStyleId();
+        const captionStyleId = this.props.dataItem._captionStyle;
+        const val = this.getVal();
         return <tr className="item" style={{fontSize: 10}} fmt={this.props.dataItem._format}>
             <td className="caption" style={Types.toCSS(this.props.styles[captionStyleId])}>
                 {this.props.dataItem._caption}
@@ -29,23 +25,23 @@ var DataItem = React.createClass({
                 {val}
             </td>
         </tr>;
-    },
+    }
 
-    _lastVal: null,
+    _lastVal = null;
 
-    shouldComponentUpdate: function(nextProps, nextState) {
+    shouldComponentUpdate(nextProps, nextState) {
         return this.props.data["(P" + this.props.dataItem.PObject._id + ")"][0] !== this._lastVal;
-    },
+    }
 
-    getStyleId: function() {
-        var dataItem = this.props.dataItem;
-        return "(P" + this.props.data["(P" + dataItem.PObject._id + ")"][1] + ")";
-        var hasExtrema = dataItem._extrema;
+    getStyleId() {
+        const dataItem = this.props.dataItem;
+        // return "(P" + this.props.data["(P" + dataItem.PObject._id + ")"][1] + ")";
+        const hasExtrema = dataItem._extrema;
         if (!hasExtrema) {
             return dataItem._defaultStyle;
         };
-        var extrema = this.props.extremas[dataItem._extremaID];
-        var val = this.getVal();
+        const extrema = this.props.extremas[dataItem._extremaID];
+        const val = this.getVal();
         if (val >= extrema._xhigh) {
             return extrema._sxhigh;
         } else if (val >= extrema._high) {
@@ -57,30 +53,26 @@ var DataItem = React.createClass({
         }
 
         return dataItem._defaultStyle;
-    },
+    }
 
-    getVal: function() {
-        var dataItem = this.props.dataItem;
-        var rawVal = this.props.data["(P" + dataItem.PObject._id + ")"][0];
-        var type = dataItem.type;
-        var fmt = dataItem._format;
+    getVal() {
+        const dataItem = this.props.dataItem;
+        const rawVal = this.props.data["(P" + dataItem.PObject._id + ")"][0];
+        const type = dataItem.type;
         switch(type) {
             case "PMDI":
             case "PTDI":
             case "PDDI":
+            default:
                 return rawVal;
-                break;
             case "PNDI":
                 return 1*rawVal;
-                break;
         }
-    },
-
-    propTypes: {
-        dataItem: Types.DataItem.isRequired,
-        extremas: React.PropTypes.objectOf(Types.Extrema.isRequired).isRequired,
-        styles: React.PropTypes.objectOf(Types.Style.isRequired).isRequired
     }
-});
 
-module.exports = DataItem;
+    static propTypes = {
+        dataItem: Types.DataItem.isRequired,
+        extremas: PropTypes.objectOf(Types.Extrema.isRequired).isRequired,
+        styles: PropTypes.objectOf(Types.Style.isRequired).isRequired
+    }
+}

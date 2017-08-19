@@ -3,21 +3,17 @@
  * Written by Joshua Netterfield <joshua@nettek.ca>, September 2014
  */
 
-/** @jsx React.DOM */
+import React from "react";
+import _ from "lodash";
 
-var React = require("react");
-var Bootstrap = require("react-bootstrap");
-var _ = require("lodash");
-
-var Box = require("./box.jsx");
-var Owl = require("./owl.jsx");
-var Types = require("./types.jsx");
+import Box from "./box";
+import Owl from "./owl";
 
 /**
  * Renders a collection of Owl boxes.
  */
-var LiveDataView = React.createClass({
-    render: function() {
+export default class LiveDataView extends React.Component {
+    render() {
         return <div className="dataView">
             {_.map(this.props.data.statics.boxes,
                 (box) => <Box box={box}
@@ -29,18 +25,18 @@ var LiveDataView = React.createClass({
         </div>;
     }
     // propTypes: {
-    //     data: React.PropTypes.shape({
-    //         data: React.PropTypes.objectOf(React.PropTypes.string).isRequired,
-    //         statics: React.PropTypes.shape({
-    //             "OWL FILE rev.": React.PropTypes.string.isRequired,
-    //             "boxes": React.PropTypes.objectOf(Types.Box.isRequired).isRequired,
-    //             "extremas": React.PropTypes.objectOf(Types.Extrema.isRequired).isRequired,
-    //             "owls": React.PropTypes.objectOf(Types.Owl.isRequired).isRequired,
-    //             "styles": React.PropTypes.objectOf(Types.Style.isRequired).isRequired
+    //     data: PropTypes.shape({
+    //         data: PropTypes.objectOf(PropTypes.string).isRequired,
+    //         statics: PropTypes.shape({
+    //             "OWL FILE rev.": PropTypes.string.isRequired,
+    //             "boxes": PropTypes.objectOf(Types.Box.isRequired).isRequired,
+    //             "extremas": PropTypes.objectOf(Types.Extrema.isRequired).isRequired,
+    //             "owls": PropTypes.objectOf(Types.Owl.isRequired).isRequired,
+    //             "styles": PropTypes.objectOf(Types.Style.isRequired).isRequired
     //         })
     //     }).isRequired
     // }
-});
+}
 
 LiveDataView.indexStaticsByKeys = function(statics) {
     if (!statics) {
@@ -57,5 +53,3 @@ LiveDataView.indexStaticsByKeys = function(statics) {
 function getPObjectIDString(obj) {
     return "(P" + obj.PObject._id + ")";
 }
-
-module.exports = LiveDataView;

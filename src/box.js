@@ -3,21 +3,19 @@
  * Written by Joshua Netterfield <joshua@nettek.ca>, September 2014
  */
 
-/** @jsx React.DOM */
+import PropTypes from 'prop-types';
+import React from "react";
+import _ from "lodash";
 
-var React = require("react");
-var Bootstrap = require("react-bootstrap");
-var _ = require("lodash");
-
-var DataItem = require("./dataItem.jsx");
-var Types = require("./types.jsx");
+import DataItem from "./dataItem";
+import Types from "./types";
 
 /**
  * Renders an Owl box, which is a list of data items.
  */
-var Box = React.createClass({
-    render: function() {
-        var style = _.extend(Types.toCSS(this.props.styles[this.props.box._style]), {
+export default class Box extends React.Component {
+    render() {
+        const style = _.extend(Types.toCSS(this.props.styles[this.props.box._style]), {
             width: this.props.box.geometryWidth,
             height: this.props.box.geometryHeight,
             marginLeft: this.props.box.geometryX,
@@ -40,24 +38,22 @@ var Box = React.createClass({
                     styles={this.props.styles} />)}
             </table>
         </div>;
-    },
+    }
 
-    _prevHash: null,
+    _prevHash = null;
 
-    shouldComponentUpdate: function() {
-        var hash = _.map(this.props.box.dataItems, (dataItem) =>
+    shouldComponentUpdate() {
+        const hash = _.map(this.props.box.dataItems, (dataItem) =>
             this.props.data["(P" + dataItem.PObject._id + ")"]).join("_");
-        var shouldUpdate = hash !== this._prevHash;
+        const shouldUpdate = hash !== this._prevHash;
         this._prevHash = hash;
         return shouldUpdate;
-    },
-
-    propTypes: {
-        box: Types.Box.isRequired,
-        // data: React.PropTypes.objectOf(React.PropTypes.string).isRequired,
-        extremas: React.PropTypes.objectOf(Types.Extrema.isRequired).isRequired,
-        styles: React.PropTypes.objectOf(Types.Style.isRequired).isRequired
     }
-});
 
-module.exports = Box;
+    static propTypes = {
+        box: Types.Box.isRequired,
+        // data: PropTypes.objectOf(PropTypes.string).isRequired,
+        extremas: PropTypes.objectOf(Types.Extrema.isRequired).isRequired,
+        styles: PropTypes.objectOf(Types.Style.isRequired).isRequired
+    }
+}

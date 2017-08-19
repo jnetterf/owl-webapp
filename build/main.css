@@ -18,3 +18,11 @@
 .box .item .caption {
     padding-right: 10px;
 }
+
+.serverName {
+    width: 100%;
+}
+
+.header {
+    margin: 0;
+}

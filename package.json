@@ -2,6 +2,7 @@
   "name": "owl-webapp",
   "version": "0.1.0",
   "private": true,
+  "homepage": "/owl-webapp/",
   "dependencies": {
     "lodash": "2.4.1",
     "prop-types": "^15.5.10",
